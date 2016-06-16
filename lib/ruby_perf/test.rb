@@ -21,7 +21,7 @@ class Test
                    "--num-call #{call} --timeout #{time}"
 
     test_result = `#{test_command}`
-    puts parse_results(test_result)
+    parse_results(test_result)
   end
 
   def parse_results(test_output)

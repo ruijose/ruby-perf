@@ -5,7 +5,7 @@ class Parser
     each_result_line = results_obtained.split("\n")
     clean_output = clean_empty_lines(each_result_line)
     hash_results = test_results_to_hash(clean_output)
-    results = remove_unnecessary_info(h)
+    results = remove_unnecessary_info(hash_results)
     remove_special_chars(results)
   end
 
@@ -30,6 +30,7 @@ class Parser
       else
         res[metric] = result
       end
+      puts metric
     end
   end
 
