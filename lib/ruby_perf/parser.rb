@@ -4,8 +4,9 @@ class Parser
   def parse_test_result(results_obtained)
     each_result_line = results_obtained.split("\n")
     clean_output = clean_empty_lines(each_result_line)
-    h = test_results_to_hash(clean_output)
-    remove_unnecessary_info(h)
+    hash_results = test_results_to_hash(clean_output)
+    results = remove_unnecessary_info(h)
+    remove_special_chars(results)
   end
 
   private
@@ -23,7 +24,12 @@ class Parser
     results.each_with_object(Hash.new(0)) do |str, res|
       metric, result = str.split(":")
       next if unimportant_params.any? { |param| metric == param }
-      res[metric] = result
+
+      if res.keys.include? metric
+        res["#{metric}_2"] = result
+      else
+        res[metric] = result
+      end
     end
   end
 
@@ -34,10 +40,24 @@ class Parser
   end
 
   def remove_string_parentheses(string)
-    string.strip.gsub(/\(.*?\)/, "")
+    string.gsub(/\(.*\)/, "").chars.reject { |e|
+      [("a".."z").map(&:upcase).to_a, ("a".."z").to_a, ["/", "-"]].any? do |el|
+        el.include?(e)
+      end
+    }.join.strip
   end
 
   def unimportant_params
     ["Reply size [B]", "Request size [B]"]
+  end
+
+  def remove_special_chars(hash)
+    hash.map { |k,v|
+      if k == "Reply status"
+        [k, v.gsub(/[0-9]+\=/, "")]
+      else
+        [k, v]
+      end
+    }.to_h
   end
 end
