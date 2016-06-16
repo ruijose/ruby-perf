@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/ruby_perf'
+require 'trollop'
+
+command_line_args = Trollop::options do
+  opt :host, "Host", :type => String
+  opt :port, "Server port number", :type => String
+  opt :url, "Path to fetch data", :type => String
+  opt :num_conn, "Connections per test", :default => 1
+  opt :num_call, "Req per connection", :default => 1
+  opt :low_rate, "Starting rate", :default => 1
+  opt :high_rate, "High rate", :default => 10
+  opt :timeout, "Timeout", :default => 5
+  opt :rate_step, "Rate step", :default => 2
+end
+
+RubyPerf.execute_test(command_line_args)
