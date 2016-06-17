@@ -2,6 +2,7 @@
 
 require_relative '../lib/ruby_perf'
 require 'trollop'
+require 'pry-byebug'
 
 command_line_args = Trollop::options do
   opt :host, "Host", :type => String
@@ -13,6 +14,24 @@ command_line_args = Trollop::options do
   opt :high_rate, "High rate", :default => 10
   opt :timeout, "Timeout", :default => 5
   opt :rate_step, "Rate step", :default => 2
+  opt :num_tests, "Number of tests to perform", :default => 1
+  opt :int, "Interval between each test", :type => String
 end
 
-RubyPerf.execute_test(command_line_args)
+num_tests = command_line_args.fetch(:num_tests)
+all_test_results = Array.new
+i = num_tests
+while i > 0
+  results = RubyPerf.execute_test(command_line_args)
+  all_test_results << results
+  CreateCsv.new(results).create_csv
+  sleep(10) if i != 1
+  i -= 1
+end
+
+
+#fazer medias
+#criar graficos com o gnuplot
+
+
+

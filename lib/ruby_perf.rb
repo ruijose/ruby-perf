@@ -14,18 +14,10 @@ module RubyPerf
       rate % rate_step == 0
     }
 
-    all_test_results = Array.new
-
-    rates.each do |rate|
-      h = test_paramaters.tap { |h|
-        h.delete(:low_rate); h.delete(:high_rate); h.delete(:rate_step)
-      }
-      h[:rate] = rate
-      test_results = Test.new(h).start_httperf_test
+    rates.each_with_object(Array.new) do |rate, all_test_results|
+      test_paramaters[:rate] = rate
+      test_results = Test.new(test_paramaters).start_httperf_test
       all_test_results << test_results
     end
-
-    CreateCsv.new(all_test_results).create_csv
-    GenerateGraph.new.generate_graph(all_test_results.first)
   end
 end
