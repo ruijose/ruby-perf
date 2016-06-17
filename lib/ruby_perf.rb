@@ -2,6 +2,7 @@ require_relative "ruby_perf/version"
 require_relative "ruby_perf/parser"
 require_relative "ruby_perf/test"
 require_relative "ruby_perf/create_csv"
+require_relative "ruby_perf/generate_graphs"
 
 module RubyPerf
   def self.execute_test(test_paramaters)
@@ -25,5 +26,6 @@ module RubyPerf
     end
 
     CreateCsv.new(all_test_results).create_csv
+    GenerateGraph.new.generate_graph(all_test_results.first)
   end
 end
