@@ -1,4 +1,0 @@
-connections,requests,replies,test_duration,connection_rate,connection_time_min,connection_time_avg,connection_time_max,connection_time_median,connection_time_stddev,connection_time,conn_length,request_rate,reply_rate_min,reply_rate_avg,reply_rate_max,reply_rate_stddev,reply_time_response,reply_time_tranfer,1xx_codes,2xx_codes,3xx_codes,4xx_codes,5xx_codes,cpu_user,cpu_system,net_io,error_total,error_cli_timo,error_socket_timo,error_conn_refused,error_conn_reset,error_fd_unavail,error_addrunavail,error_ftab-full,error_other
-1,10,10,0.439,2.3,439.5,439.5,439.5,439.5,0.0,30.6,10.0,22.8,0.0,0.0,0.0,0.0,40.9,0.0,0,10,0,0,0,0.08,0.36,8.6,0,0,0,0,0,0,0,0,0
-1,10,10,0.41,2.4,410.0,410.0,410.0,409.5,0.0,30.3,10.0,24.4,0.0,0.0,0.0,0.0,38.0,0.0,0,10,0,0,0,0.08,0.33,9.2,0,0,0,0,0,0,0,0,0
-1,10,10,0.426,2.3,426.3,426.3,426.3,426.5,0.0,32.0,10.0,23.5,0.0,0.0,0.0,0.0,39.4,0.0,0,10,0,0,0,0.1,0.33,8.9,0,0,0,0,0,0,0,0,0

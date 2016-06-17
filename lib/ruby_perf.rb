@@ -16,6 +16,7 @@ module RubyPerf
 
     rates.each_with_object(Array.new) do |rate, all_test_results|
       test_paramaters[:rate] = rate
+      test_paramaters[:requests_goal] = rates
       test_results = Test.new(test_paramaters).start_httperf_test
       all_test_results << test_results
     end
