@@ -22,6 +22,7 @@ num_tests = command_line_args.fetch(:num_tests)
 i = num_tests
 while i > 0
   results = RubyPerf.execute_test(command_line_args)
+  p results
   CreateCsv.new(results).create_csv
   sleep(10) if i != 1
   i -= 1

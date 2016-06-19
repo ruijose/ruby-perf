@@ -4,9 +4,9 @@ class Parser
   def parse_test_result(results_obtained)
     clean_output = clean_empty_lines(results_obtained)
     hash_results = test_results_to_hash(clean_output)
-    results = remove_unnecessary_info(hash_results)
-    values = remove_special_chars(results).values.map { |e| e.split(" ") }.flatten
-    csv_headers.zip(values).to_h.reduce(Hash.new(0)) do |h, (k,v)|
+    remaining = remove_unnecessary_symbols(hash_results)
+
+    csv_headers.zip(remaining).to_h.reduce(Hash.new(0)) do |h, (k,v)|
       h[k] = v.include?(".") ? v.to_f : v.to_i ; h
     end
   end
@@ -39,21 +39,42 @@ class Parser
     end
   end
 
-  def remove_unnecessary_info(test_hash_results)
-    test_hash_results.map { |k, v|
-      [k, remove_string_parentheses(v)]
+  def remove_unnecessary_symbols(test_hash_results)
+    h = test_hash_results.map { |k, v|
+      [k, remove_symbols(v)]
     }.to_h
+
+    handle_reply_status_field(h).values.map { |e|
+      e.split(" ")
+    }.flatten
   end
 
-  def remove_string_parentheses(string)
-    string.gsub(/\(.*\)/, "").chars.reject { |e|
-      object_to_remove.any? do |el|
-        el.include?(e)
-      end
+  def remove_symbols(string)
+    remove_string_parentheses(string).chars.reject { |e|
+      element_verification(e)
     }.join.strip
   end
 
-  def remove_special_chars(hash)
+  def remove_string_parentheses(string)
+    string.gsub(/\(.*\)/, "")
+  end
+
+  def symbols_to_remove
+    ["/", "-"]
+  end
+
+  def letters_to_remove
+    alphabet = ("a".."z").to_a
+    alphabet + alphabet.map(&:upcase)
+  end
+
+  def element_verification(element)
+    [letters_to_remove, symbols_to_remove].any? do |array|
+      array.include?(element)
+    end
+  end
+
+  def handle_reply_status_field(hash)
     hash.map { |k,v|
       if k == "Reply status"
         [k, v.gsub(/[0-9]+\=/, "")]
@@ -61,10 +82,6 @@ class Parser
         [k, v]
       end
     }.to_h
-  end
-
-  def object_to_remove
-    [("a".."z").map(&:upcase).to_a, ("a".."z").to_a, ["/", "-"]]
   end
 
   def csv_headers
