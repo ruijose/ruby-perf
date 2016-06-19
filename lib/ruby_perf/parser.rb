@@ -2,14 +2,17 @@ require 'json'
 
 class Parser
   def parse_test_result(results_obtained)
-    each_result_line = results_obtained.split("\n")
-    clean_output = clean_empty_lines(each_result_line)
+    clean_output = clean_empty_lines(results_obtained)
     hash_results = test_results_to_hash(clean_output)
     results = remove_unnecessary_info(hash_results)
     values = remove_special_chars(results).values.map { |e| e.split(" ") }.flatten
     csv_headers.zip(values).to_h.reduce(Hash.new(0)) do |h, (k,v)|
       h[k] = v.include?(".") ? v.to_f : v.to_i ; h
     end
+  end
+
+  def unimportant_params
+    ["Reply size [B]", "Request size [B]"]
   end
 
   private
@@ -44,14 +47,10 @@ class Parser
 
   def remove_string_parentheses(string)
     string.gsub(/\(.*\)/, "").chars.reject { |e|
-      [("a".."z").map(&:upcase).to_a, ("a".."z").to_a, ["/", "-"]].any? do |el|
+      object_to_remove.any? do |el|
         el.include?(e)
       end
     }.join.strip
-  end
-
-  def unimportant_params
-    ["Reply size [B]", "Request size [B]"]
   end
 
   def remove_special_chars(hash)
@@ -62,6 +61,10 @@ class Parser
         [k, v]
       end
     }.to_h
+  end
+
+  def object_to_remove
+    [("a".."z").map(&:upcase).to_a, ("a".."z").to_a, ["/", "-"]]
   end
 
   def csv_headers

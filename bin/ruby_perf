@@ -27,9 +27,5 @@ while i > 0
   i -= 1
 end
 
-
-#fazer medias
-#criar graficos com o gnuplot
-
-
+# GenerateGraph.new({ "request_rate" => 13, "reply_rate_avg" => 15 }).generate_graph
 

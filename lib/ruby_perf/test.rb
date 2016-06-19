@@ -25,6 +25,8 @@ class Test
   end
 
   def parse_results(test_output)
-    parser.parse_test_result(test_output)
+    p test_output
+    to_array = test_output.split("\n")
+    parser.parse_test_result(to_array)
   end
 end
