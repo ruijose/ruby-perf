@@ -19,14 +19,16 @@ class Test
                    "--port #{port} --uri #{url} "\
                    "--rate #{rate} --num-conn #{conn} "\
                    "--num-call #{call} --timeout #{time}"
+    puts test_command
 
     test_result = `#{test_command}`
+    puts test_result
+
     parse_results(test_result)
   end
 
   def parse_results(test_output)
     to_array = test_output.split("\n")
-    p to_array
     parser.parse_test_result(to_array)
   end
 end

@@ -12,7 +12,7 @@ module RubyPerf
 
     rates = (low_rate..high_rate).select { |rate|
       rate % rate_step == 0
-    }
+    }.map { |rate| rate / 10 }
 
     rates.each_with_object(Array.new) do |rate, all_test_results|
       test_paramaters[:rate] = rate
