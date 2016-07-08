@@ -1,11 +1,5 @@
 class GenerateGraph
-  attr_reader :plot_type
-
-  def initialize(plot_type)
-    @plot_type = plot_type
-  end
-
-  def generate_graph
+  def generate_grap
     IO.popen("gnuplot", "w") { |io| io.puts commands }
   end
 

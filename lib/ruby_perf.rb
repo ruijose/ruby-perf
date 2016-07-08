@@ -14,8 +14,10 @@ module RubyPerf
       rate % rate_step == 0
     }.map { |rate| rate / 10 }
 
+    puts rates
+
     rates.each_with_object(Array.new) do |rate, all_test_results|
-      test_paramaters[:rate] = rate
+      test_paramaters[:rate] = rate * 10
       test_results = Test.new(test_paramaters).start_httperf_test
       all_test_results << test_results
     end

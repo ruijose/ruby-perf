@@ -24,9 +24,8 @@ while i > 0
   results = RubyPerf.execute_test(command_line_args)
   p results
   CreateCsv.new(results).create_csv
-  sleep(10) if i != 1
+  sleep(3600) if i != 1
   i -= 1
 end
 
-# GenerateGraph.new({ "request_rate" => 13, "reply_rate_avg" => 15 }).generate_graph
 
